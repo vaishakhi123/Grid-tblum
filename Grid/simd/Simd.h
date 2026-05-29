@@ -119,6 +119,24 @@ accelerator_inline std::complex<double> conjugate(const std::complex<double>& r)
 accelerator_inline std::complex<float>  conjugate(const std::complex<float>& r) { return(conj(r)); }
 accelerator_inline std::complex<double> adj(const std::complex<double>& r)      { return(conj(r)); }
 accelerator_inline std::complex<float>  adj(const std::complex<float>& r)       { return(conj(r)); }
+
+accelerator_inline ComplexD operator*(const ComplexD& a, const std::complex<double>& b){ return a * ComplexD(b); }
+accelerator_inline ComplexD operator*(const std::complex<double>& a, const ComplexD& b){ return ComplexD(a) * b; }
+accelerator_inline ComplexD operator/(const ComplexD& a, const std::complex<double>& b){ return a / ComplexD(b); }
+accelerator_inline ComplexD operator/(const std::complex<double>& a, const ComplexD& b){ return ComplexD(a) / b; }
+accelerator_inline ComplexD operator+(const ComplexD& a, const std::complex<double>& b){ return a + ComplexD(b); }
+accelerator_inline ComplexD operator+(const std::complex<double>& a, const ComplexD& b){ return ComplexD(a) + b; }
+accelerator_inline ComplexD operator-(const ComplexD& a, const std::complex<double>& b){ return a - ComplexD(b); }
+accelerator_inline ComplexD operator-(const std::complex<double>& a, const ComplexD& b){ return ComplexD(a) - b; }
+accelerator_inline ComplexF operator*(const ComplexF& a, const std::complex<float>& b){ return a * ComplexF(b); }
+accelerator_inline ComplexF operator*(const std::complex<float>& a, const ComplexF& b){ return ComplexF(a) * b; }
+accelerator_inline ComplexF operator/(const ComplexF& a, const std::complex<float>& b){ return a / ComplexF(b); }
+accelerator_inline ComplexF operator/(const std::complex<float>& a, const ComplexF& b){ return ComplexF(a) / b; }
+accelerator_inline ComplexF operator+(const ComplexF& a, const std::complex<float>& b){ return a + ComplexF(b); }
+accelerator_inline ComplexF operator+(const std::complex<float>& a, const ComplexF& b){ return ComplexF(a) + b; }
+accelerator_inline ComplexF operator-(const ComplexF& a, const std::complex<float>& b){ return a - ComplexF(b); }
+accelerator_inline ComplexF operator-(const std::complex<float>& a, const ComplexF& b){ return ComplexF(a) - b; }
+
 #endif
 
 accelerator_inline RealF real(const RealF  & r){ return r; }
