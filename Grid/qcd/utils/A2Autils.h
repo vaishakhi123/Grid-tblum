@@ -63,7 +63,13 @@ public:
 			 std::vector<Gamma::Algebra> gammas,
 			 const std::vector<ComplexField > &mom,
 			 int orthogdim, double *t_kernel = nullptr, double *t_gsum = nullptr);
-  
+
+  // Applies Gamma(g) * in(x) -> out(x) site-wise. Used by A2AMesonFieldOpt to
+  // pre-contract right vectors before A2ASpatialSum (see A2ASpatialSum.h).
+  static void GammaRight(FermionField       &out,
+                          Gamma::Algebra      g,
+                          const FermionField &in);
+
   template <typename TensorType>
   static void StagMesonField(TensorType &mat,
             const FermionField *lhs_wi,
@@ -1078,6 +1084,23 @@ void A2Autils<FImpl>::AslashField(TensorType &mat,
 }
 
 #endif
+
+template <class FImpl>
+void A2Autils<FImpl>::GammaRight(FermionField       &out,
+                                   Gamma::Algebra      g,
+                                   const FermionField &in)
+{
+  GridBase     *grid   = in.Grid();
+  int           Nsimd  = grid->Nsimd();
+  uint64_t      oSites = grid->oSites();
+  Gamma::Algebra ga    = g;
+  autoView(out_v, out, AcceleratorWrite);
+  autoView(in_v,  in,  AcceleratorRead);
+  accelerator_for(ss, oSites, (size_t)Nsimd, {
+    coalescedWrite(out_v[ss], Gamma(ga) * in_v(ss));
+  });
+}
+
 //
 // meson field with user defined v,w vecs.
 // No gammas or mom done here
@@ -2403,4 +2426,3 @@ void A2Autils<FImpl>::PionFieldVV(Eigen::Tensor<ComplexD,3> &mat,
 */
 
 NAMESPACE_END(Grid);
-
